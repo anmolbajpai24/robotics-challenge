@@ -1,0 +1,20 @@
+# Virtual environment
+lerobot-env/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Eval outputs (videos, logs)
+outputs/
+
+# Migrated model checkpoint (~1GB; recreate with lerobot's migrate_policy_normalization script)
+diffusion_pusht_migrated/
+
+# Hugging Face / experiment caches, in case they ever land in the repo
+.cache/
+huggingface/
+wandb/
