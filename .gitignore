@@ -18,3 +18,4 @@ diffusion_pusht_migrated/
 .cache/
 huggingface/
 wandb/
+day3/eval_0[13579]*/videos/
