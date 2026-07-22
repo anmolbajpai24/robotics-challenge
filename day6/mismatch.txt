@@ -1,0 +1,7 @@
+SmolVLA (smolvla_base) expects  vs  PushT delivers
+
+| feature     | SmolVLA expects      | PushT delivers  |
+| ----------- | -------------------- | --------------- |
+| state dim   | 6-dim                | 2-dim           |
+| cameras     | 3 x 256x256          | 1 x 384x384     |
+| action dim  | 6-dim                | 2-dim           |
