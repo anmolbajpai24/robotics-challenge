@@ -11,11 +11,18 @@ __pycache__/
 # Eval outputs (videos, logs)
 outputs/
 
-# Migrated model checkpoint (~1GB; recreate with lerobot's migrate_policy_normalization script)
+# Migrated model checkpoints (~1GB each; recreate with lerobot's migrate_policy_normalization script)
 diffusion_pusht_migrated/
+act_aloha_transfer_migrated/
 
 # Hugging Face / experiment caches, in case they ever land in the repo
 .cache/
 huggingface/
 wandb/
 day3/eval_0[13579]*/videos/
+
+# Local training checkpoints (large; kept on the external SSD, not in git)
+day5/train_run_test/
+
+# Local project notes / scratch
+CLAUDE.md
