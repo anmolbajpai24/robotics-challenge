@@ -1,0 +1,1 @@
+Day7 preflight Wed Jul 22 11:18:50 UTC 2026 UTC | MUJOCO_GL=egl | gym_aloha/AlohaTransferCube-v0 | RENDER OK (480,640,3) uint8 | GPU offscreen EGL works on WSL2/4060

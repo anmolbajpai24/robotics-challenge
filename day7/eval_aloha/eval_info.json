@@ -1,0 +1,101 @@
+{
+  "per_task": [
+    {
+      "task_group": "aloha",
+      "task_id": 0,
+      "metrics": {
+        "sum_rewards": [
+          78.0,
+          167.0,
+          192.0,
+          297.0,
+          278.0,
+          61.0,
+          297.0,
+          268.0,
+          249.0,
+          96.0
+        ],
+        "max_rewards": [
+          1.0,
+          4.0,
+          4.0,
+          4.0,
+          4.0,
+          1.0,
+          4.0,
+          4.0,
+          4.0,
+          2.0
+        ],
+        "successes": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          false,
+          true,
+          true,
+          true,
+          false
+        ],
+        "video_paths": [
+          "day7/eval_aloha/videos/aloha_0/eval_episode_0.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_1.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_2.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_3.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_4.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_5.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_6.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_7.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_8.mp4",
+          "day7/eval_aloha/videos/aloha_0/eval_episode_9.mp4"
+        ],
+        "predicted_video_paths": []
+      }
+    }
+  ],
+  "per_group": {
+    "aloha": {
+      "avg_sum_reward": 198.3,
+      "avg_max_reward": 3.2,
+      "pc_success": 70.0,
+      "n_episodes": 10,
+      "video_paths": [
+        "day7/eval_aloha/videos/aloha_0/eval_episode_0.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_1.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_2.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_3.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_4.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_5.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_6.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_7.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_8.mp4",
+        "day7/eval_aloha/videos/aloha_0/eval_episode_9.mp4"
+      ],
+      "predicted_video_paths": []
+    }
+  },
+  "overall": {
+    "avg_sum_reward": 198.3,
+    "avg_max_reward": 3.2,
+    "pc_success": 70.0,
+    "n_episodes": 10,
+    "eval_s": 320.5156373977661,
+    "eval_ep_s": 32.051563787460324,
+    "video_paths": [
+      "day7/eval_aloha/videos/aloha_0/eval_episode_0.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_1.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_2.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_3.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_4.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_5.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_6.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_7.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_8.mp4",
+      "day7/eval_aloha/videos/aloha_0/eval_episode_9.mp4"
+    ],
+    "predicted_video_paths": []
+  }
+}
