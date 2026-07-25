@@ -1,0 +1,31 @@
+# Provenance evidence for day5/eval_100k (ACT-on-PushT, 100k checkpoint)
+#
+# Why this file exists: eval_100k/ holds only eval_info.json + videos/ — no
+# launch log was captured at run time. The command below was recovered from
+# shell history (`history` line 112, also present in ~/.bash_history) on
+# 2026-07-25 while deciding whether eval_100k qualifies for the frozen ruler.
+# Bash history evaporates; this transcribes the proof so it survives.
+#
+# Provenance grade: bash_history (NOT "log"). Transcribing after the fact does
+# not upgrade it — it was not captured at launch. Same standing as day3/eval_final.
+
+lerobot-eval \
+  --policy.path=/mnt/d/robotics-challenge/day5/train_run/checkpoints/100000/pretrained_model \
+  --env.type=pusht \
+  --eval.n_episodes=500 \
+  --eval.batch_size=4 \
+  --eval.use_async_envs=false \
+  --seed=1000 \
+  --policy.device=cuda \
+  --output_dir=day5/eval_100k
+
+# Frozen-protocol check (ruler = 500 ep, batch 4, async off, seed 1000, cuda):
+#   n_episodes=500        MATCH
+#   batch_size=4          MATCH
+#   use_async_envs=false  MATCH
+#   seed=1000             MATCH
+#   device=cuda           MATCH
+#   no n_action_steps / temporal_ensemble override -> vanilla, not a sweep
+#
+# Verdict: qualifies as frozen-500. Result on this run: 0.80% success.
+# -> added "day5/eval_100k" to FROZEN_500 in dashboard/main.py.
