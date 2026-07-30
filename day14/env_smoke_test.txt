@@ -1,0 +1,4 @@
+AdroitHandRelocateDense-v1, AdroitHandHammerDense-v1, AdroitHandDoorDense-v1 environment's reward functions were updated in v1.2.1 without an environment version update. Therefore, use gymnasium-robotics==1.2.0 for v1 reproducibility or use v2 in gymnasium-robotics>=1.4.3. See https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220 for more details
+[-2.02177168e+00 -3.22278889e-01 -6.77457291e-01 -5.32155809e-06] (84, 84, 3) Box(-1.0, 1.0, (4,), float32)
+obj (relative): [-0.19834724 -0.06867298 -0.06673696]  z_target: 0.7162499999999999
+is_success now: False  gap to success: 0.7829869647530299

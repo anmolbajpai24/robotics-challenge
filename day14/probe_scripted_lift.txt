@@ -1,0 +1,22 @@
+episode  1/20  success True
+episode  2/20  success True
+episode  3/20  success True
+episode  4/20  success True
+episode  5/20  success True
+episode  6/20  success True
+episode  7/20  success True
+episode  8/20  success True
+episode  9/20  success True
+episode 10/20  success True
+episode 11/20  success True
+episode 12/20  success True
+episode 13/20  success True
+episode 14/20  success True
+episode 15/20  success True
+episode 16/20  success True
+episode 17/20  success True
+episode 18/20  success True
+episode 19/20  success True
+episode 20/20  success True
+
+SCRIPTED ORACLE: 20/20 = 100%

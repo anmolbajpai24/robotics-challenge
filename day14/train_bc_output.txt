@@ -1,0 +1,45 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 8572.93it/s]
+WARNING:lerobot.datasets.utils:Unknown fields in DatasetInfo: ['files_size_in_mb']. These will be ignored.
+one batch: (256, 4) (256, 4)
+model on cuda | parameters: 17668
+epoch   1/40  mse loss 0.385255
+epoch   2/40  mse loss 0.372598
+epoch   3/40  mse loss 0.369480
+epoch   4/40  mse loss 0.368027
+epoch   5/40  mse loss 0.366775
+epoch   6/40  mse loss 0.366048
+epoch   7/40  mse loss 0.365082
+epoch   8/40  mse loss 0.365067
+epoch   9/40  mse loss 0.364306
+epoch  10/40  mse loss 0.363351
+epoch  11/40  mse loss 0.363486
+epoch  12/40  mse loss 0.363453
+epoch  13/40  mse loss 0.363067
+epoch  14/40  mse loss 0.362784
+epoch  15/40  mse loss 0.362636
+epoch  16/40  mse loss 0.362349
+epoch  17/40  mse loss 0.362084
+epoch  18/40  mse loss 0.361996
+epoch  19/40  mse loss 0.361342
+epoch  20/40  mse loss 0.361445
+epoch  21/40  mse loss 0.361196
+epoch  22/40  mse loss 0.360926
+epoch  23/40  mse loss 0.361129
+epoch  24/40  mse loss 0.360920
+epoch  25/40  mse loss 0.360466
+epoch  26/40  mse loss 0.360505
+epoch  27/40  mse loss 0.360635
+epoch  28/40  mse loss 0.360019
+epoch  29/40  mse loss 0.359821
+epoch  30/40  mse loss 0.359414
+epoch  31/40  mse loss 0.359427
+epoch  32/40  mse loss 0.359200
+epoch  33/40  mse loss 0.359483
+epoch  34/40  mse loss 0.359138
+epoch  35/40  mse loss 0.358776
+epoch  36/40  mse loss 0.358652
+epoch  37/40  mse loss 0.359032
+epoch  38/40  mse loss 0.358469
+epoch  39/40  mse loss 0.358669
+epoch  40/40  mse loss 0.358257
+saved bc_mlp.pt and train_losses.txt

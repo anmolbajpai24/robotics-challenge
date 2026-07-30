@@ -1,0 +1,30 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 15753.25it/s]
+WARNING:lerobot.datasets.utils:Unknown fields in DatasetInfo: ['files_size_in_mb']. These will be ignored.
+episodes: 800
+frames: 20000
+
+--- one sample ---
+observation.image: shape (3, 84, 84), dtype torch.float32
+observation.state: shape (4,), dtype torch.float32
+action: shape (4,), dtype torch.float32
+episode_index: shape (), dtype torch.int64
+frame_index: shape (), dtype torch.int64
+timestamp: shape (), dtype torch.float32
+next.reward: shape (), dtype torch.float32
+next.done: shape (), dtype torch.bool
+index: shape (), dtype torch.int64
+task_index: shape (), dtype torch.int64
+task: 'Pick up the cube and lift it.' (str)
+
+--- bulk ranges (via hf_dataset, no video decoding) ---
+states tensor: (20000, 4)
+state  min: tensor([ 1.1948, -0.0609,  0.4967, -0.0786])
+state  max: tensor([1.7790, 0.5064, 0.8753, 0.9009])
+action min: tensor([-1., -1., -1., -1.])
+action max: tensor([1., 1., 1., 1.])
+
+--- teacher's report card: final reward of each episode ---
+final rewards: (800,)
+min: -0.05268063023686409
+mean: 0.3949476480484009
+max: 1.3470274209976196
