@@ -1,0 +1,30 @@
+AdroitHandRelocateDense-v1, AdroitHandHammerDense-v1, AdroitHandDoorDense-v1 environment's reward functions were updated in v1.2.1 without an environment version update. Therefore, use gymnasium-robotics==1.2.0 for v1 reproducibility or use v2 in gymnasium-robotics>=1.4.3. See https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220 for more details
+episode   1/800  seed 5000  steps 181  success True  running success rate 100.0%
+episode  50/800  seed 5049  steps 181  success True  running success rate 100.0%
+episode 100/800  seed 5099  steps 181  success True  running success rate 100.0%
+episode 150/800  seed 5149  steps 181  success True  running success rate 100.0%
+episode 200/800  seed 5199  steps 181  success True  running success rate 99.5%
+episode 250/800  seed 5249  steps 181  success True  running success rate 99.2%
+episode 300/800  seed 5299  steps 181  success True  running success rate 99.3%
+episode 350/800  seed 5349  steps 181  success True  running success rate 99.1%
+episode 400/800  seed 5399  steps 181  success True  running success rate 98.8%
+episode 450/800  seed 5449  steps 181  success True  running success rate 98.9%
+episode 500/800  seed 5499  steps 182  success True  running success rate 99.0%
+episode 550/800  seed 5549  steps 181  success True  running success rate 99.1%
+episode 600/800  seed 5599  steps 181  success True  running success rate 99.0%
+episode 650/800  seed 5649  steps 181  success True  running success rate 98.9%
+episode 700/800  seed 5699  steps 181  success True  running success rate 99.0%
+episode 750/800  seed 5749  steps 181  success True  running success rate 99.1%
+episode 800/800  seed 5799  steps 181  success True  running success rate 99.1%
+
+--- teacher stats (37.5s, 0.05s/episode) ---
+episodes: 800  seeds 5000..5799
+teacher successes: 793/800 = 99.1%
+total (state, action) pairs: 145912
+episode length: min 180  mean 182.4  max 300
+state layout: [hand x, hand y, hand z, gripper angle, cube x, cube y, cube z]
+state min per dim: [ 1.2662  0.0501  0.577  -0.0132  1.455  -0.0139  0.5691]
+state max per dim: [1.7114 0.3005 1.2058 0.8964 1.7935 0.2511 0.7162]
+action min per dim: [-0.0161 -1.     -0.8778 -1.    ]
+action max per dim: [1.    0.113 1.    1.   ]
+saved oracle_demos_800.npz

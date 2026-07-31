@@ -1,0 +1,44 @@
+mode sighted: input dims 7
+pairs: 143812 of 145912 (dropped 7 failed episodes)
+model on cuda | parameters: 18052
+epoch   1/40  mse loss 0.063673
+epoch   2/40  mse loss 0.033197
+epoch   3/40  mse loss 0.020709
+epoch   4/40  mse loss 0.015742
+epoch   5/40  mse loss 0.013712
+epoch   6/40  mse loss 0.012408
+epoch   7/40  mse loss 0.011547
+epoch   8/40  mse loss 0.010854
+epoch   9/40  mse loss 0.010274
+epoch  10/40  mse loss 0.009592
+epoch  11/40  mse loss 0.009187
+epoch  12/40  mse loss 0.008772
+epoch  13/40  mse loss 0.008542
+epoch  14/40  mse loss 0.008064
+epoch  15/40  mse loss 0.007853
+epoch  16/40  mse loss 0.007617
+epoch  17/40  mse loss 0.007427
+epoch  18/40  mse loss 0.007259
+epoch  19/40  mse loss 0.007100
+epoch  20/40  mse loss 0.006856
+epoch  21/40  mse loss 0.006797
+epoch  22/40  mse loss 0.006488
+epoch  23/40  mse loss 0.006301
+epoch  24/40  mse loss 0.006209
+epoch  25/40  mse loss 0.006138
+epoch  26/40  mse loss 0.006004
+epoch  27/40  mse loss 0.005858
+epoch  28/40  mse loss 0.005870
+epoch  29/40  mse loss 0.005630
+epoch  30/40  mse loss 0.005654
+epoch  31/40  mse loss 0.005577
+epoch  32/40  mse loss 0.005476
+epoch  33/40  mse loss 0.005358
+epoch  34/40  mse loss 0.005346
+epoch  35/40  mse loss 0.005188
+epoch  36/40  mse loss 0.005208
+epoch  37/40  mse loss 0.005113
+epoch  38/40  mse loss 0.005176
+epoch  39/40  mse loss 0.004993
+epoch  40/40  mse loss 0.005042
+saved bc_mlp_sighted.pt and train_losses_sighted.txt

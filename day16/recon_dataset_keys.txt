@@ -1,0 +1,33 @@
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files: 100%|██████████| 4/4 [00:00<00:00, 8228.16it/s]
+WARNING:lerobot.datasets.utils:Unknown fields in DatasetInfo: ['files_size_in_mb']. These will be ignored.
+--- manifest: every channel the recorder logged ---
+observation.image: shape (84, 84, 3), names ['height', 'width', 'channel']
+observation.state: shape (4,), names {'motors': ['motor_0', 'motor_1', 'motor_2', 'motor_3']}
+action: shape (4,), names {'motors': ['motor_0', 'motor_1', 'motor_2', 'motor_3']}
+episode_index: shape (1,), names None
+frame_index: shape (1,), names None
+timestamp: shape (1,), names None
+next.reward: shape (1,), names None
+next.done: shape (1,), names None
+index: shape (1,), names None
+task_index: shape (1,), names None
+
+--- reality: columns actually in the table on disk ---
+['observation.state', 'action', 'episode_index', 'frame_index', 'timestamp', 'next.reward', 'next.done', 'index', 'task_index']
+
+--- one sample, as training would see it ---
+observation.image: shape (3, 84, 84), dtype torch.float32
+observation.state: shape (4,), dtype torch.float32
+action: shape (4,), dtype torch.float32
+episode_index: shape (), dtype torch.int64
+frame_index: shape (), dtype torch.int64
+timestamp: shape (), dtype torch.float32
+next.reward: shape (), dtype torch.float32
+next.done: shape (), dtype torch.bool
+index: shape (), dtype torch.int64
+task_index: shape (), dtype torch.int64
+task: 'Pick up the cube and lift it.'
+
+VERDICT: the only observation channels are observation.image (pixels)
+and observation.state (4 dims, generic motor names). No numeric cube
+position anywhere in the dataset -> Branch B: generate oracle demos.
