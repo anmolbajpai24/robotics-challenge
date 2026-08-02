@@ -1,0 +1,28 @@
+day12 weld-offset probe -- why retarget.py subtracts an offset from mocap targets
+
+Setup: TransferCubeEndEffectorTask stepped directly (task.before_step + physics.step),
+RIGHT arm commanded to a fixed mocap target for 250 steps, then measured where the
+fingertip geom (vx300s_right/10_right_gripper_finger) actually settled.
+
+The EE task couples arm to mocap with a SOFT weld (solimp=".25 .25 0.001" in
+bimanual_viperx_end_effector_transfer_cube.xml), so the gripper trails its target
+and the error varies with arm pose.
+
+commanded mocap xyz   -> fingertip xyz (settled)      offset (fingertip - target)
+(0.10, 0.50, 0.10)    -> (0.1725, 0.5425, 0.0537)     (+0.0725, +0.0425, -0.0463)
+(0.10, 0.50, 0.15)    -> (0.1668, 0.5424, 0.1141)     (+0.0668, +0.0424, -0.0359)
+(0.20, 0.50, 0.10)    -> (0.2955, 0.5424, 0.0834)     (+0.0955, +0.0424, -0.0166)
+(0.00, 0.50, 0.10)    -> (0.0548, 0.5426, 0.0618)     (+0.0548, +0.0426, -0.0382)
+(0.10, 0.40, 0.10)    -> (0.1599, 0.4061, 0.0463)     (+0.0599, +0.0061, -0.0537)
+(0.10, 0.60, 0.10)    -> (0.1948, 0.6703, 0.0620)     (+0.0948, +0.0703, -0.0380)
+
+Averages used in retarget.py (right arm; left arm mirrors x by symmetry):
+  WELD_OFFSET_RIGHT = (+0.070, +0.042, -0.040)
+  WELD_OFFSET_LEFT  = (-0.070, +0.042, -0.040)
+Good to roughly +/-3 cm -- the residual is pose-dependent, which is part of why
+the replay's near-miss at t~22s misses by a couple of centimetres.
+
+Related camera-orientation evidence (same session):
+  camera_check_cube_plus_x.png / _minus_x.png : sim +x renders to image RIGHT (no mirror)
+  camera_check_cube_y.png                     : sim +y renders to image UP
+                                                (image y must be inverted in the mapping)

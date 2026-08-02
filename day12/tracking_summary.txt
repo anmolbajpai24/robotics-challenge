@@ -1,0 +1,8 @@
+day12 hand tracking summary
+video: hand_video.MOV 1920x1080 59.976fps 1979 frames
+mediapipe 0.10.35 HandLandmarker VIDEO mode num_hands=2 conf=0.5
+two hands: 1565 (79.1%) | one hand: 180 | none: 234
+left-in-image  pinch cm: p10 7.33 median 7.95 p90 8.42 -- 0.5% below 6cm (never grasps)
+right-in-image pinch cm: p10 4.09 median 5.77 p90 7.94 -- 56.4% below 6cm
+min wrist gap 0.470 at t=22.06s -- hands never cross, no identity swap
+NOTE: some coords exceed 1.0 (MediaPipe extrapolates off-frame hands) -- clamp before use

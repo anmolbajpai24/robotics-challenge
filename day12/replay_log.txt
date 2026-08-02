@@ -1,0 +1,13 @@
+day12 replay: retargeted human hand video -> ALOHA transfer-cube sim
+actions: day12/aloha_actions.npy  (1649 steps @ 50 Hz = 33.0 s)
+cube start (fixed, disclosed): x=0.1 y=0.5 z=0.05
+camera: top  video: day12/sim_replay.mp4 @ 25 fps
+
+BEST REWARD: 0 -- no contact
+
+steps spent at each reward level:
+  reward 0 (no contact): 1649 steps (100.0%)
+  reward 1 (right gripper touched cube): 0 steps (0.0%)
+  reward 2 (right gripper lifted cube): 0 steps (0.0%)
+  reward 3 (left gripper touched cube (transfer attempted)): 0 steps (0.0%)
+  reward 4 (left gripper holds cube off table (transfer!)): 0 steps (0.0%)

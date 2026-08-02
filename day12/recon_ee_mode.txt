@@ -1,0 +1,6 @@
+gym_aloha /home/anmol_bajpai/robotics-challenge/lerobot-env/lib/python3.12/site-packages/gym_aloha/__init__.py
+mujoco 3.8.1
+qpos (14,)
+mocap_pos [[-0.31718881  0.5         0.29525084]
+ [ 0.31718881  0.49999888  0.29525084]]
+reward 0
