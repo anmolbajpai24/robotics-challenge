@@ -1,0 +1,39 @@
+== day 20 local smoke test 2026-08-02T23:34:12Z ==
+server: uvicorn dashboard.main:app --port 8011 (same module:app Render will run)
+
+$ GET /health
+{"ok":true}
+
+$ GET /summary — counts + frozen table
+counts: {'runs': 15, 'policies': 4, 'envs': 2}
+  pretrained-diffusion: 61.0% (outputs/eval/2026-07-16/22-35-58_pusht_diffusion, frozen-500, provenance=log)
+  diffusion-scratch: 39.8% (day3/eval_final, frozen-500, provenance=bash_history)
+  act-pusht: 0.8% (day5/eval_100k, frozen-500, provenance=bash_history)
+
+$ GET /videos
+  pretrained-diffusion · PushT ep0, success (61.0% frozen-500)
+  diffusion-scratch 90k · PushT ep0, success (39.8% frozen-500)
+  act-pusht · PushT ep0, a rare success (0.8% frozen-500)
+  act-aloha-pretrained · ALOHA transfer cube, best episode (7/10)
+  bc-mlp-sighted · xarm lift ep0 (99.0% frozen-500)
+  bc-mlp-blind-control · xarm lift ep0 (4.2% frozen-500)
+
+$ GET each /videos/file/* (must all be 200 video/mp4)
+  200 video/mp4 69978B /videos/file/outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4
+  200 video/mp4 131840B /videos/file/day3/eval_final/videos/pusht_0/eval_episode_0.mp4
+  200 video/mp4 62889B /videos/file/day5/eval_100k/videos/pusht_0/eval_episode_0.mp4
+  200 video/mp4 229303B /videos/file/day7/aloha_transfer_best_ep3.mp4
+  200 video/mp4 106806B /videos/file/day16/rollout_sighted_ep0.mp4
+  200 video/mp4 201150B /videos/file/day16/rollout_blind_ep0.mp4
+
+$ traversal probe (--path-as-is, expect 404)
+  404
+
+$ GET / (built frontend)
+  200 text/html; charset=utf-8
+
+$ GET /curves/skill
+  diffusion-scratch [(10000, 10.0), (30000, 34.7), (50000, 43.3), (70000, 43.3), (90000, 39.8)]
+
+$ GET /runs count
+  15 runs
