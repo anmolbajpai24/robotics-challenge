@@ -1,0 +1,8 @@
+== single-process verification (final code: curated /videos + static mount) ==
+GET /health -> 200
+GET /summary -> 200
+GET /runs -> 200
+GET /videos -> 200
+GET /curves/skill -> 200
+GET /runs/day3/eval_final/metrics -> 200
+GET / -> 200 (serves built UI, title: robotics-challenge · eval dashboard)

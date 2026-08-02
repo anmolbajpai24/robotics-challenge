@@ -1,0 +1,48 @@
+{
+    "counts": {
+        "runs": 15,
+        "policies": 4,
+        "envs": 2
+    },
+    "frozen_table": [
+        {
+            "id": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion",
+            "policy": "pretrained-diffusion",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 61.0,
+            "avg_sum_reward": 108.21993475433462,
+            "avg_max_reward": 0.9446263724126646,
+            "videos_path": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos",
+            "timestamp": "2026-07-17T00:48:04.042944+00:00"
+        },
+        {
+            "id": "day3/eval_final",
+            "policy": "diffusion-scratch",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "bash_history",
+            "n_episodes": 500,
+            "success_rate": 39.800000000000004,
+            "avg_sum_reward": 106.04062324825308,
+            "avg_max_reward": 0.8446824117180656,
+            "videos_path": "day3/eval_final/videos",
+            "timestamp": "2026-07-19T10:28:33.226464+00:00"
+        },
+        {
+            "id": "day5/eval_100k",
+            "policy": "act-pusht",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "bash_history",
+            "n_episodes": 500,
+            "success_rate": 0.8,
+            "avg_sum_reward": 44.74296661861696,
+            "avg_max_reward": 0.4418572385568005,
+            "videos_path": "day5/eval_100k/videos",
+            "timestamp": "2026-07-20T14:47:31.398073+00:00"
+        }
+    ]
+}

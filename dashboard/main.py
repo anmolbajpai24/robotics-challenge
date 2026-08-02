@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 app = FastAPI(title="Robotics Challenge Eval Results API")
@@ -48,6 +50,25 @@ PROVENANCE_LOG = {
     "day3/eval_050000",
     "day3/eval_070000",
 }
+
+
+# Curated rollout clips for the Episodes player, one per storyline. The
+# allowlist doubles as the path check in /videos/file — nothing outside it
+# is ever served.
+VIDEO_CLIPS = [
+    ("pretrained-diffusion · PushT ep0, success (61.0% frozen-500)",
+     "outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4"),
+    ("diffusion-scratch 90k · PushT ep0, success (39.8% frozen-500)",
+     "day3/eval_final/videos/pusht_0/eval_episode_0.mp4"),
+    ("act-pusht · PushT ep0, a rare success (0.8% frozen-500)",
+     "day5/eval_100k/videos/pusht_0/eval_episode_0.mp4"),
+    ("act-aloha-pretrained · ALOHA transfer cube, best episode (7/10)",
+     "day7/aloha_transfer_best_ep3.mp4"),
+    ("bc-mlp-sighted · xarm lift ep0 (99.0% frozen-500)",
+     "day16/rollout_sighted_ep0.mp4"),
+    ("bc-mlp-blind-control · xarm lift ep0 (4.2% frozen-500)",
+     "day16/rollout_blind_ep0.mp4"),
+]
 
 
 def assert_policy(run_id: str) -> str:
@@ -133,6 +154,12 @@ class CurvePoint(BaseModel):
 class SkillCurve(BaseModel):
     policy: str
     points: list[CurvePoint]
+
+
+class VideoClip(BaseModel):
+    id: str
+    title: str
+    url: str
 
 
 def find_eval_files() -> list[Path]:
@@ -293,3 +320,30 @@ def get_skill_curve(policy: str = "diffusion-scratch"):
             )
         )
     return SkillCurve(policy=policy, points=points)
+
+
+@app.get("/videos", response_model=list[VideoClip])
+def list_videos():
+    return [
+        VideoClip(id=rel_path, title=title, url=f"/videos/file/{rel_path}")
+        for title, rel_path in VIDEO_CLIPS
+        if (REPO_ROOT / rel_path).is_file()
+    ]
+
+
+@app.get("/videos/file/{rel_path:path}")
+def get_video_file(rel_path: str):
+    if rel_path not in {path for _, path in VIDEO_CLIPS}:
+        raise HTTPException(status_code=404, detail=f"No video at '{rel_path}'")
+    video_path = REPO_ROOT / rel_path
+    if not video_path.is_file():
+        raise HTTPException(status_code=404, detail=f"No video at '{rel_path}'")
+    return FileResponse(video_path, media_type="video/mp4")
+
+
+# The built frontend (dashboard/static, from `npm run build` in dashboard/frontend).
+# Mounted last so every API route above wins; html=True serves index.html at /.
+# Conditional so the bare API still runs before the frontend is built.
+STATIC_DIR = Path(__file__).resolve().parent / "static"
+if STATIC_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="ui")

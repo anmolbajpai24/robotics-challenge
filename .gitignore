@@ -8,8 +8,13 @@ __pycache__/
 *.egg-info/
 .ipynb_checkpoints/
 
-# Eval outputs (videos, logs)
-outputs/
+# Eval outputs — ignored except outputs/eval (2.7MB): the day-1/2 pretrained
+# baseline evidence that the dashboard leaderboard reads
+outputs/*
+!outputs/eval/
+
+# Frontend
+node_modules/
 
 # Migrated model checkpoints (~1GB each; recreate with lerobot's migrate_policy_normalization script)
 diffusion_pusht_migrated/
@@ -23,6 +28,11 @@ day3/eval_0[13579]*/videos/
 
 # Local training checkpoints (large; kept on the external SSD, not in git)
 day5/train_run_test/
+
+# Day 12 raw phone capture (59MB) and MediaPipe hand model (7.5MB, re-downloadable
+# from https://developers.google.com/mediapipe — see day12/track_hands.py)
+day12/hand_video.MOV
+day12/hand_landmarker.task
 
 # Local project notes / scratch
 CLAUDE.md

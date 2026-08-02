@@ -1,0 +1,62 @@
+== day 19: /videos + single-process verification (uvicorn dashboard.main:app :8011) ==
+
+$ curl -s :8011/videos
+[
+    {
+        "id": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4",
+        "title": "pretrained-diffusion \u00b7 PushT ep0, success (61.0% frozen-500)",
+        "url": "/videos/file/outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day3/eval_final/videos/pusht_0/eval_episode_0.mp4",
+        "title": "diffusion-scratch 90k \u00b7 PushT ep0, success (39.8% frozen-500)",
+        "url": "/videos/file/day3/eval_final/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day5/eval_100k/videos/pusht_0/eval_episode_0.mp4",
+        "title": "act-pusht \u00b7 PushT ep0, a rare success (0.8% frozen-500)",
+        "url": "/videos/file/day5/eval_100k/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day7/aloha_transfer_best_ep3.mp4",
+        "title": "act-aloha-pretrained \u00b7 ALOHA transfer cube, best episode (7/10)",
+        "url": "/videos/file/day7/aloha_transfer_best_ep3.mp4"
+    },
+    {
+        "id": "day16/rollout_sighted_ep0.mp4",
+        "title": "bc-mlp-sighted \u00b7 xarm lift ep0 (99.0% frozen-500)",
+        "url": "/videos/file/day16/rollout_sighted_ep0.mp4"
+    },
+    {
+        "id": "day16/rollout_blind_ep0.mp4",
+        "title": "bc-mlp-blind-control \u00b7 xarm lift ep0 (4.2% frozen-500)",
+        "url": "/videos/file/day16/rollout_blind_ep0.mp4"
+    }
+]
+
+$ GET /videos/file/day16/rollout_sighted_ep0.mp4
+200, 106806 bytes
+$ traversal probe /videos/file/day16/../../CLAUDE.md (--path-as-is)
+404
+$ non-allowlisted mp4 /videos/file/day14/rollout_ep0.mp4
+404
+
+== all API routes still answer with static mounted ==
+GET /health -> 200
+GET /summary -> 200
+GET /runs -> 200
+GET /videos -> 200
+GET /curves/skill -> 200
+GET /runs/day3/eval_final/metrics -> 200
+
+$ GET / (UI index, first 300 bytes)
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>robotics-challenge · eval dashboard</title>
+    <script type="module" crossorigin src="/assets/index-D0oHe-qn.js"></script>
+    <link rel="s
+$ GET js bundle
+200, 149830 bytes
