@@ -1,0 +1,81 @@
+AdroitHandRelocateDense-v1, AdroitHandHammerDense-v1, AdroitHandDoorDense-v1 environment's reward functions were updated in v1.2.1 without an environment version update. Therefore, use gymnasium-robotics==1.2.0 for v1 reproducibility or use v2 in gymnasium-robotics>=1.4.3. See https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220 for more details
+
+--- installed push.py: deprecated stub, is_success + reward commented out (gym_xarm/tasks/push.py lines 1-23) ---
+   1  # import numpy as np
+   2  
+   3  from gym_xarm.tasks import Base
+   4  
+   5  
+   6  class Push(Base):
+   7      """DEPRECATED: use only Lift for now"""
+   8  
+   9      ...
+  10      # def __init__(self):
+  11      #     super().__init__("push")
+  12  
+  13      # def _reset_sim(self):
+  14      #     self._act_magnitude = 0
+  15      #     super()._reset_sim()
+  16  
+  17      # def is_success(self):
+  18      #     return np.linalg.norm(self.obj - self.goal) <= 0.05
+  19  
+  20      # def get_reward(self):
+  21      #     dist = np.linalg.norm(self.obj - self.goal)
+  22      #     penalty = self._act_magnitude**2
+  23      #     return -(dist + 0.15 * penalty)
+
+--- installed push.py: commented _sample_goal — self.goal is ABSOLUTE world coords (gym_xarm/tasks/push.py lines 60-77) ---
+  60      # def _sample_goal(self):
+  61      #     # Gripper
+  62      #     gripper_pos = np.array([1.280, 0.295, 0.735]) + self.np_random.uniform(-0.05, 0.05, size=3)
+  63      #     super()._set_gripper(gripper_pos, self.gripper_rotation)
+  64  
+  65      #     # Object
+  66      #     object_pos = self.center_of_table - np.array([0.25, 0, 0.07])
+  67      #     object_pos[0] += self.np_random.uniform(-0.08, 0.08, size=1)
+  68      #     object_pos[1] += self.np_random.uniform(-0.08, 0.08, size=1)
+  69      #     object_qpos = self.sim.data.get_joint_qpos("object_joint0")
+  70      #     object_qpos[:3] = object_pos
+  71      #     self.sim.data.set_joint_qpos("object_joint0", object_qpos)
+  72  
+  73      #     # Goal
+  74      #     self.goal = np.array([1.600, 0.200, 0.545])
+  75      #     self.goal[:2] += self.np_random.uniform(-0.1, 0.1, size=2)
+  76      #     self.sim.model.site_pos[self.sim.model.site_name2id("target0")] = self.goal
+  77      #     return self.goal
+
+--- installed base.py: obj property is TABLE-RELATIVE — same cross-frame bug as lift (gym_xarm/tasks/base.py lines 173-175) ---
+ 173      @property
+ 174      def obj(self):
+ 175          return self._utils.get_site_xpos(self.model, self.data, "object_site") - self.center_of_table
+
+--- spaces ---
+action space:      Box(-1.0, 1.0, (4,), float32)
+observation space: Box(-1000.0, 1000.0, (35,), float64)
+max episode steps: 300
+
+--- resets (hand/cube/goal all printed in the ABSOLUTE frame) ---
+seed 1000:
+  hand [1.2889 0.2862 0.6066]  cube [1.3575 0.3046 0.5663]  goal [1.5382 0.1563 0.545 ]
+  shipped-math dist (rel cube vs abs goal): 1.9419  <= 0.05? False
+  patched-math dist (abs vs abs):           0.2347  <= 0.05? False
+seed 1001:
+  hand [1.2893 0.2718 0.6009]  cube [1.4623 0.2322 0.5663]  goal [1.5402 0.226  0.545 ]
+  shipped-math dist (rel cube vs abs goal): 1.8622  <= 0.05? False
+  patched-math dist (abs vs abs):           0.0811  <= 0.05? False
+seed 1002:
+  hand [1.2873 0.2802 0.6121]  cube [1.3873 0.2739 0.5663]  goal [1.611  0.1374 0.545 ]
+  shipped-math dist (rel cube vs abs goal): 1.9835  <= 0.05? False
+  patched-math dist (abs vs abs):           0.2629  <= 0.05? False
+
+--- 10 no-op steps (does the sim hold still and not explode) ---
+cube z spawn-settled 0.5663 -> after 10 no-ops 0.5664
+goal z (fixed in _sample_goal): 0.5450
+resting z offset cube-vs-goal: 0.0214 (3D threshold 0.05 leaves ~0.0452 xy tolerance)
+reward at spawn: -0.2347  terminated False  info {'is_success': np.False_}
+
+--- satisfiability: teleport cube onto the goal, patched check must fire ---
+after teleport: patched is_success() = True
+
+RECON VERDICT: env boots, shipped success math unsatisfiable (cross-frame, same class of bug as lift), patched absolute-frame check satisfiable. Proceed.

@@ -1,0 +1,28 @@
+episode   1/800  seed 5000  steps 108  success True  running success rate 100.0%
+episode  50/800  seed 5049  steps  97  success True  running success rate 96.0%
+episode 100/800  seed 5099  steps 101  success True  running success rate 97.0%
+episode 150/800  seed 5149  steps  82  success True  running success rate 97.3%
+episode 200/800  seed 5199  steps 105  success True  running success rate 97.5%
+episode 250/800  seed 5249  steps  89  success True  running success rate 97.6%
+episode 300/800  seed 5299  steps 102  success True  running success rate 97.7%
+episode 350/800  seed 5349  steps 109  success True  running success rate 97.7%
+episode 400/800  seed 5399  steps  93  success True  running success rate 97.8%
+episode 450/800  seed 5449  steps  70  success True  running success rate 98.0%
+episode 500/800  seed 5499  steps 127  success True  running success rate 98.2%
+episode 550/800  seed 5549  steps 105  success True  running success rate 98.2%
+episode 600/800  seed 5599  steps  96  success True  running success rate 98.3%
+episode 650/800  seed 5649  steps 126  success True  running success rate 98.3%
+episode 700/800  seed 5699  steps 103  success True  running success rate 98.3%
+episode 750/800  seed 5749  steps 116  success True  running success rate 98.3%
+episode 800/800  seed 5799  steps 108  success True  running success rate 98.2%
+--- teacher stats (21.5s, 0.03s/episode) ---
+episodes: 800  seeds 5000..5799
+teacher successes: 786/800 = 98.2%
+total (state, action) pairs: 89086
+episode length: min 1  mean 111.4  max 300
+state layout: [hand x, hand y, hand z, gripper angle, cube x, cube y, cube z, goal x, goal y, goal z]
+state min per dim: [1.2571 0.1462 0.5743 0.     1.325  0.1329 0.5309 1.5001 0.1002 0.545 ]
+state max per dim: [1.7082 0.5152 1.2177 0.9122 1.8365 0.467  1.2489 1.6992 0.3    0.545 ]
+action min per dim: [-0.9858 -1.     -1.      1.    ]
+action max per dim: [1. 1. 1. 1.]
+saved oracle_demos_800.npz
