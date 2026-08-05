@@ -162,10 +162,6 @@ export default function App() {
           {apiUp === null ? 'api: checking' : apiUp ? 'api: up' : 'api: down'}
         </div>
       </header>
-      <p className="sub">
-        22 days of learning robotics in public. Every number here has a protocol label, because comparisons only mean something within one ruler.
-      </p>
-
       <nav className="tabs">
         <button className={tab === 'leaderboard' ? 'active' : ''} onClick={() => setTab('leaderboard')}>
           Leaderboard
@@ -178,8 +174,7 @@ export default function App() {
       {tab === 'leaderboard' ? <Leaderboard apiUp={apiUp} /> : <Episodes />}
 
       <footer className="site">
-        Built during a 22-day challenge, days 8 to 20. Backend: FastAPI. Frontend: React.
-        Frozen protocol means 500 episodes, fixed seeds, saved evidence.
+        Built by <a href="https://x.com/anmol_bajpai24" target="_blank" rel="noreferrer">Anmol Bajpai</a>
       </footer>
     </div>
   )
