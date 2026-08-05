@@ -119,7 +119,6 @@ function Episodes() {
   return (
     <section className="card">
       <h2>Episode player</h2>
-      <p className="protocol">rollout videos saved during evals. Nothing re-runs to serve these</p>
       {!fetched && <p className="note">querying…</p>}
       {fetched && !videos && (
         <div className="banner">
