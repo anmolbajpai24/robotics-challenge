@@ -1,5 +1,5 @@
-=== smoke test after docs/fill-challenge-gaps dashboard changes ===
-date (UTC, WSL log time): Mon Oct 12 13:07:09 UTC 2026
+=== smoke test after docs/fill-challenge-gaps follow-up fixes ===
+date (UTC, WSL log time): Mon Oct 12 13:45:57 UTC 2026
 server: uvicorn dashboard.main:app --port 8011
 
 --- GET /health ---
@@ -180,3 +180,8 @@ status: 200  content-type: text/html; charset=utf-8
 
 --- GET /videos/file/day21/rollout_push_ep0.mp4 (status + size only) ---
 status: 200  content-type: video/mp4  size: 107497 bytes
+
+--- /summary frozen_table grouped by env_type (api.js groupRowsByEnv, direct test) ---
+xarm: bc-mlp-sighted 99.0%, bc-mlp-push 98.8%, bc-mlp-blind-control 4.2%, bc-mlp-blind 0.0%
+pusht: pretrained-diffusion 61.0%, diffusion-scratch 39.8%, act-pusht 0.8%
+pusht and xarm rows confirmed in separate groups, never merged.

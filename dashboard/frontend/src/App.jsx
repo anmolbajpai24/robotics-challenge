@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getHealth, getSummary, getVideos, normalizeSummary, normalizeVideos, rowsForEnv } from './api.js'
+import { getHealth, getSummary, getVideos, normalizeSummary, normalizeVideos, rowsForEnv, groupRowsByEnv } from './api.js'
 
 // The frozen numbers below are committed facts with saved evidence, used as
 // a fallback when the API is down. When /summary answers, the PushT and xarm
@@ -64,6 +64,10 @@ function Leaderboard({ apiUp }) {
   // it doesn't, one table per env, same pattern on both sides.
   const pushtRows = rowsForEnv(rawSummary, 'pusht') ?? PUSHT_FROZEN
   const xarmRows = rowsForEnv(rawSummary, 'xarm') ?? XARM_FROZEN
+  // frozen_table itself is one flat list sorted across every env_type, so
+  // group it before rendering: a pusht row and an xarm row must never sit
+  // in the same table, including in the raw "live" panel below.
+  const liveGroups = groupRowsByEnv(rawSummary)
 
   return (
     <>
@@ -94,8 +98,14 @@ function Leaderboard({ apiUp }) {
             API not reachable{apiUp ? ' at /summary' : ''}. Start it with uvicorn and reload. The frozen tables above are static copies of committed results.
           </div>
         )}
-        {rawSummary && summary && <Table rows={summary} />}
-        {rawSummary && !summary && (
+        {rawSummary && liveGroups && liveGroups.map(g => (
+          <div key={g.envType} className="subtable">
+            <h3>{g.envType}</h3>
+            <Table rows={g.rows} />
+          </div>
+        ))}
+        {rawSummary && !liveGroups && summary && <Table rows={summary} />}
+        {rawSummary && !liveGroups && !summary && (
           <>
             <div className="banner">
               Response shape not recognized by the normalizer. Raw payload below. Fix: adjust normalizeSummary() in src/api.js to map these fields.
