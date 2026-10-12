@@ -76,7 +76,7 @@ VIDEO_CLIPS = [
 
 # The xarm lift/push BC runs (day14, day16, day21) were scored with a
 # hand-written eval loop (day14/eval_bc.py and its day16/day21 copies), not
-# lerobot_eval.py, so there's no eval_info.json for them — only a plain-text
+# lerobot_eval.py, so there's no eval_info.json for them, only a plain-text
 # log. These four logs are all on the frozen-500 protocol (day14/EVAL_PROTOCOL.md):
 # 500 episodes, reset(seed=1000+i), 300-step cap. Read-only: this only reads
 # the committed .txt files below, never writes to them.
@@ -156,7 +156,7 @@ def xarm_run_summary(entry: dict) -> RunSummary:
     parsed = parse_xarm_txt(entry["txt_path"])
     modified_time = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc).isoformat()
     # day14/16/21 success is binary (cube height or cube-to-goal distance past
-    # a threshold) — there is no graded reward like PushT's. To keep the
+    # a threshold), there is no graded reward like PushT's. To keep the
     # RunSummary schema uniform, avg_sum_reward/avg_max_reward here are the
     # same binary success fraction already in success_rate, not a new number.
     reward_proxy = parsed["n_success"] / parsed["n_episodes"]

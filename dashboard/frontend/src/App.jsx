@@ -61,7 +61,7 @@ function Leaderboard({ apiUp }) {
   }, [])
 
   // Live from /summary when it answers, same embedded rows as fallback when
-  // it doesn't — one table per env, same pattern on both sides.
+  // it doesn't, one table per env, same pattern on both sides.
   const pushtRows = rowsForEnv(rawSummary, 'pusht') ?? PUSHT_FROZEN
   const xarmRows = rowsForEnv(rawSummary, 'xarm') ?? XARM_FROZEN
 
