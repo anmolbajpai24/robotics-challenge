@@ -54,12 +54,11 @@ while the four earlier checkpoints only ran 150 episodes each as a cheaper
 probe, so they're not directly the same sample size, worth keeping in mind
 when comparing the flat middle of the curve to the final point.
 
-## A timing note (see mismatch list)
+## A timing note
 
 The day 4 update post describes the curve in hours of training ("10% after
-one hour, 35% after three, 43% after five and a half"). Checking those
-against the actual checkpoint timestamps in `train.log`: the 50k-step
-checkpoint (the 43% point) landed 6h20m into the run, not 5h30m, and the
-other checkpoints run about 45-50 minutes later than their tweet labels too.
-The step numbers and percentages above are exact; the hour labels in the
-original post are rougher than that.
+one hour, 35% after three, 43% after five and a half"). The real checkpoint
+timestamps in `train.log`: step 10,000 at 1h21m, step 30,000 at 3h53m, step
+50,000 (the 43% point) at 6h20m, step 70,000 at 8h27m. The post's hour
+labels are rounded for a tweet; the step numbers and percentages above are
+the exact ones.

@@ -44,13 +44,17 @@ Method (`weld_offset_probe.txt`): command the right-arm mocap target to 6
 known points, step the physics for 250 steps, and read back where the
 fingertip geom actually settled.
 
-**It doesn't go where it's told.** Across the 6 tested points, the
-fingertip settles consistently to the right, slightly up, and below the
-commanded target, with the 3D offset magnitude ranging from about 7.9cm to
-12.4cm (and averaging around 9.5cm). The reason is in the sim's own task
-file: the end-effector task couples the arm to its mocap target with a
-*soft* weld (`solimp=".25 .25 0.001"`), not a rigid lock, so gravity and the
-arm's own geometry pull the real fingertip away from the commanded point.
+**It doesn't go where it's told.** At the first tested point
+(`(0.10, 0.50, 0.10)`), the fingertip lands at `(0.1725, 0.5425, 0.0537)`,
++0.0725m along x, the "about 7cm" the day 13 post quotes. That x number is
+one slice of a 3D offset: at that same point the full 3D gap is about
+9.6cm, and across all 6 tested points (`weld_offset_probe.txt`) the 3D
+offset ranges from about 8cm to 12cm, depending on pose. The fingertip
+settles consistently to the right, slightly up, and below the commanded
+target. The reason is in the sim's own task file: the end-effector task
+couples the arm to its mocap target with a *soft* weld
+(`solimp=".25 .25 0.001"`), not a rigid lock, so gravity and the arm's own
+geometry pull the real fingertip away from the commanded point.
 
 The error also isn't constant. It changes with the commanded pose; moving
 the target in x, y, or z each shifted the offset by a different amount
