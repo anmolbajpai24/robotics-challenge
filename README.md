@@ -50,11 +50,12 @@ the benchmark, not to compete on it).
 
 - **PushT frozen-500:** 500 episodes, `batch_size=4`, `use_async_envs=false`,
   seed 1000, cuda. Established day 1, never changed. ±4 pts sampling error.
-- **xarm frozen-500:** 500 episodes, `reset(seed=1000+i)`, 300-step cap,
-  success = cube ≥ 15cm above spawn (patched success check). Established day 14.
+- **xarm frozen-500:** 500 episodes, `reset(seed=1000+i)`, 300-step cap.
+  Lift success = cube ≥ 15cm above spawn (patched success check, day 14).
+  Push success = cube within 5cm of the goal (same cross-frame fix, day 21).
 
 Runs on the frozen ruler are labeled `frozen-500` by the API; everything else
-is `exploratory`. Each run also carries a provenance label — whether its launch
+is `exploratory`. Each run also carries a provenance label: whether its launch
 command survives in a committed log or only in bash history (day 9).
 
 ## The dashboard
@@ -74,7 +75,7 @@ Endpoints: `/summary`, `/runs`, `/runs/{id}`, `/runs/{id}/metrics`,
 
 ## Run it locally
 
-The dashboard needs only Python 3.12 and three pinned packages — not LeRobot:
+The dashboard needs only Python 3.12 and three pinned packages, not LeRobot:
 
 ```bash
 git clone https://github.com/anmolbajpai24/robotics-challenge.git
@@ -117,15 +118,15 @@ the research idea behind each morning post.
 | 2 | opened the 206-demo PushT dataset: 96x96 thumbnails, the first demo overshoots and recovers | [day2/](day2/) | [post](https://x.com/anmol_bajpai24/status/2078049330519564633) |
 | 3 | started training a 263M-param diffusion policy from scratch, 90k steps overnight on the RTX 4060 | [day3/](day3/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2078454656704069734) |
 | 4 | overnight run finished: 90k steps in 10h41m, 39.8% on the frozen-500 ruler vs the pretrained model's 61.0% | [day3/](day3/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2078780417772274042) |
-| 5 | trained ACT: 0.8% at default settings on the frozen ruler, 11% off-ruler after tuning the chunk-size knob | [day5/](day5/) | [post](https://x.com/anmol_bajpai24/status/2079171442688876656) |
+| 5 | trained ACT: 0.8% at default settings on the frozen ruler, 11% off-ruler after changing how many predicted moves it runs before re-planning (`n_action_steps=8`) | [day5/](day5/) | [post](https://x.com/anmol_bajpai24/status/2079171442688876656) |
 | 6 | tried SmolVLA on PushT: pads to 32 dims so nothing crashes, but the arm-trained brain's numbers don't mean the right thing here | [day6/](day6/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2079461377769615851) |
 | 7 | pretrained ACT on ALOHA transfer-cube, the body it was built for: 7/10 | [day7/](day7/) | [post](https://x.com/anmol_bajpai24/status/2079852457740374311) |
-| 8 | no post | TODO(anmol) | TODO(anmol) |
+| 8 | started the eval harness: one URL lists all 15 evals from the week, read live from the result files (success rates, episode counts, rewards, videos) | [dashboard/](dashboard/main.py) | [post](https://x.com/anmol_bajpai24/status/2080273805218570639) · [update](https://x.com/anmol_bajpai24/status/2080357274997133673) |
 | 9 | reconstructed policy provenance for all 15 historical runs, corrected day 5's ACT number to its honest on-ruler 0.8% | [day9/](day9/provenance.md) | [post](https://x.com/anmol_bajpai24/status/2080636744140296256) |
 | 10 | shipped the eval API: `/summary`, per-run metrics, the day-4 skill curve served live | [dashboard/](dashboard/main.py) | [post](https://x.com/anmol_bajpai24/status/2081029985272492296) |
-| 11 | read a paper from Karen Liu's lab at Stanford; no evening update, paper and takeaway not recorded | TODO(anmol) | [post](https://x.com/anmol_bajpai24/status/2081281867500920977) |
+| 11 | read ARCap (Karen Liu's lab with Li Fei-Fei's group, Stanford): AR headset shows a ghost robot while you demo with bare hands, so the embodiment gap is caught while you collect data; a diffusion policy learned a cluttered-scene task from 30 min of ARCap data with no teleoperation | [CONCEPTS.md](CONCEPTS.md#day-11-arcap) · [paper](https://tml.stanford.edu/ARCap) | [post](https://x.com/anmol_bajpai24/status/2081281867500920977) · [update](https://x.com/anmol_bajpai24/status/2081444439185076234) |
 | 12 | filmed a hand passing a matchbox, retargeted it onto the ALOHA sim via MediaPipe: 0 success, closest approach about 2cm | [day12/](day12/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2081691923090378780) |
-| 13 | measured the sim's commanded-vs-reached gripper position: off by several centimeters, pose-dependent, from a soft weld | [day12/](day12/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2081978960754421789) |
+| 13 | measured the sim's commanded-vs-reached gripper position: about 7cm off along x at the first pose, 8-12cm in 3D across six poses, pose-dependent, from a soft weld | [day12/](day12/NOTES.md) | [post](https://x.com/anmol_bajpai24/status/2081978960754421789) |
 | 14 | wrote a BC training loop by hand for xarm lift | [day14/](day14/RESULTS.md) | [post](https://x.com/anmol_bajpai24/status/2082485597248295152) |
 | 15 | first xarm frozen-500 benchmark: 0/500; a scripted oracle confirms the bench itself works (20/20) | [day14/](day14/RESULTS.md) | [post](https://x.com/anmol_bajpai24/status/2082827912131248297) |
 | 16 | added the cube's position to the input: same benchmark, 99.0% sighted vs 4.2% blind control | [day16/](day16/RESULTS.md) | [post](https://x.com/anmol_bajpai24/status/2083186440419365314) |
