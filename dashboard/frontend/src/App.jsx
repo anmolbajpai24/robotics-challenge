@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getHealth, getSummary, getVideos, normalizeSummary, normalizeVideos } from './api.js'
+import { getHealth, getSummary, getVideos, normalizeSummary, normalizeVideos, rowsForEnv, groupRowsByEnv } from './api.js'
 
-// The frozen numbers are committed facts with saved evidence. They render
-// even if the API is down, and the live panel below shows what the API
-// itself serves so the two can be compared at a glance.
+// The frozen numbers below are committed facts with saved evidence, used as
+// a fallback when the API is down. When /summary answers, the PushT and xarm
+// tables render its live rows instead (same numbers, read straight off the
+// eval files) and the "Live from the API" panel further down shows the full
+// raw response for comparison.
 
 const PUSHT_FROZEN = [
   { name: 'pretrained-diffusion', value: '61.0%', note: 'official checkpoint, migrated' },
@@ -14,7 +16,8 @@ const PUSHT_FROZEN = [
 const XARM_FROZEN = [
   { name: 'bc-mlp-blind (day 14)', value: '0.0%', note: 'TD-MPC demos, no cube in state' },
   { name: 'bc-mlp-blind-control (day 16)', value: '4.2%', note: 'oracle demos, cube stripped' },
-  { name: 'bc-mlp-sighted (day 16)', value: '99.0%', note: 'oracle demos, cube xyz in state' }
+  { name: 'bc-mlp-sighted (day 16)', value: '99.0%', note: 'oracle demos, cube xyz in state' },
+  { name: 'bc-mlp-push (day 21)', value: '98.8%', note: 'oracle demos, pushes cube to a target instead of lifting' }
 ]
 
 const OFF_RULER = [
@@ -57,18 +60,27 @@ function Leaderboard({ apiUp }) {
     })
   }, [])
 
+  // Live from /summary when it answers, same embedded rows as fallback when
+  // it doesn't, one table per env, same pattern on both sides.
+  const pushtRows = rowsForEnv(rawSummary, 'pusht') ?? PUSHT_FROZEN
+  const xarmRows = rowsForEnv(rawSummary, 'xarm') ?? XARM_FROZEN
+  // frozen_table itself is one flat list sorted across every env_type, so
+  // group it before rendering: a pusht row and an xarm row must never sit
+  // in the same table, including in the raw "live" panel below.
+  const liveGroups = groupRowsByEnv(rawSummary)
+
   return (
     <>
       <section className="card">
         <h2>PushT <span className="tag frozen">frozen protocol</span></h2>
         <p className="protocol">500 episodes · batch_size=4 · use_async_envs=false · seed 1000 · ±4 pts sampling error</p>
-        <Table rows={PUSHT_FROZEN} />
+        <Table rows={pushtRows} />
       </section>
 
       <section className="card">
-        <h2>xarm lift <span className="tag frozen">frozen protocol</span></h2>
-        <p className="protocol">500 episodes · reset(seed=1000+i) · 300-step cap · success: cube ≥ 15cm above spawn (patched check)</p>
-        <Table rows={XARM_FROZEN} />
+        <h2>xarm <span className="tag frozen">frozen protocol</span></h2>
+        <p className="protocol">500 episodes · reset(seed=1000+i) · 300-step cap · lift success: cube ≥ 15cm above spawn · push success: cube within 5cm of goal</p>
+        <Table rows={xarmRows} />
       </section>
 
       <section className="card">
@@ -86,8 +98,14 @@ function Leaderboard({ apiUp }) {
             API not reachable{apiUp ? ' at /summary' : ''}. Start it with uvicorn and reload. The frozen tables above are static copies of committed results.
           </div>
         )}
-        {rawSummary && summary && <Table rows={summary} />}
-        {rawSummary && !summary && (
+        {rawSummary && liveGroups && liveGroups.map(g => (
+          <div key={g.envType} className="subtable">
+            <h3>{g.envType}</h3>
+            <Table rows={g.rows} />
+          </div>
+        ))}
+        {rawSummary && !liveGroups && summary && <Table rows={summary} />}
+        {rawSummary && !liveGroups && !summary && (
           <>
             <div className="banner">
               Response shape not recognized by the normalizer. Raw payload below. Fix: adjust normalizeSummary() in src/api.js to map these fields.

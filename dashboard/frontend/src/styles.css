@@ -79,6 +79,18 @@ section.card h2 { font-size: 15px; margin: 0 0 2px; font-weight: 650; }
   margin: 0 0 14px;
 }
 
+.subtable { margin-top: 14px; }
+.subtable:first-of-type { margin-top: 0; }
+.subtable h3 {
+  color: var(--faint);
+  font-size: 11px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
 th { color: var(--faint); font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }

@@ -36,3 +36,6 @@ day12/hand_landmarker.task
 
 # Local project notes / scratch
 CLAUDE.md
+
+# Windows zone-identifier metadata on files downloaded via WSL/explorer
+*:Zone.Identifier
