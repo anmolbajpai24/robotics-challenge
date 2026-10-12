@@ -5,6 +5,7 @@ Parses results that already exist on disk. Never writes into those dirs.
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -68,7 +69,154 @@ VIDEO_CLIPS = [
      "day16/rollout_sighted_ep0.mp4"),
     ("bc-mlp-blind-control · xarm lift ep0 (4.2% frozen-500)",
      "day16/rollout_blind_ep0.mp4"),
+    ("bc-mlp-push · xarm push ep0 (98.8% frozen-500)",
+     "day21/rollout_push_ep0.mp4"),
 ]
+
+
+# The xarm lift/push BC runs (day14, day16, day21) were scored with a
+# hand-written eval loop (day14/eval_bc.py and its day16/day21 copies), not
+# lerobot_eval.py, so there's no eval_info.json for them — only a plain-text
+# log. These four logs are all on the frozen-500 protocol (day14/EVAL_PROTOCOL.md):
+# 500 episodes, reset(seed=1000+i), 300-step cap. Read-only: this only reads
+# the committed .txt files below, never writes to them.
+XARM_TXT_RUNS = [
+    {
+        "id": "day14/eval_500_seed1000",
+        "policy": "bc-mlp-blind",
+        "txt_path": "day14/eval_500_seed1000.txt",
+        "video_paths": [
+            "day14/rollout_ep0.mp4", "day14/rollout_ep1.mp4", "day14/rollout_ep2.mp4",
+        ],
+    },
+    {
+        "id": "day16/eval_500_blind",
+        "policy": "bc-mlp-blind-control",
+        "txt_path": "day16/eval_500_blind.txt",
+        "video_paths": [
+            "day16/rollout_blind_ep0.mp4", "day16/rollout_blind_ep1.mp4", "day16/rollout_blind_ep2.mp4",
+        ],
+    },
+    {
+        "id": "day16/eval_500_sighted",
+        "policy": "bc-mlp-sighted",
+        "txt_path": "day16/eval_500_sighted.txt",
+        "video_paths": [
+            "day16/rollout_sighted_ep0.mp4", "day16/rollout_sighted_ep1.mp4", "day16/rollout_sighted_ep2.mp4",
+        ],
+    },
+    {
+        "id": "day21/eval_500_push",
+        "policy": "bc-mlp-push",
+        "txt_path": "day21/eval_500_push.txt",
+        "video_paths": [
+            "day21/rollout_push_ep0.mp4", "day21/rollout_push_ep1.mp4", "day21/rollout_push_ep2.mp4",
+        ],
+    },
+]
+XARM_RUNS_BY_ID = {entry["id"]: entry for entry in XARM_TXT_RUNS}
+
+# "RESULT: 0/500 = 0.0% success | seed base 1000 | 85.3s (0.17s/episode)" (day14)
+# "RESULT [push]: 494/500 = 98.8% success | seed base 1000 | 31.4s (0.06s/episode)" (day16/day21)
+XARM_RESULT_LINE = re.compile(
+    r"RESULT(?:\s*\[\w+\])?:\s*(\d+)/(\d+)\s*=\s*([\d.]+)%\s*success\s*\|"
+    r"\s*seed base (\d+)\s*\|\s*([\d.]+)s\s*\(([\d.]+)s/episode\)"
+)
+# "episode   1/500  seed 1000  steps 300  success False  running rate 0.0%"
+XARM_EPISODE_LINE = re.compile(
+    r"^episode\s+\d+/\d+\s+seed\s+\d+\s+steps\s+\d+\s+success\s+(True|False)\s+running rate"
+)
+
+
+def parse_xarm_txt(txt_path: str) -> dict:
+    """Read-only parse of one day14/16/21 eval_bc.py log. Never writes to it."""
+    text = (REPO_ROOT / txt_path).read_text()
+    result_match = XARM_RESULT_LINE.search(text)
+    if result_match is None:
+        raise HTTPException(status_code=500, detail=f"no RESULT line in {txt_path}")
+    n_success, n_episodes, success_rate, seed_base, eval_s, eval_ep_s = result_match.groups()
+    successes = [
+        line_match.group(1) == "True"
+        for line_match in (XARM_EPISODE_LINE.match(line) for line in text.splitlines())
+        if line_match
+    ]
+    return {
+        "n_episodes": int(n_episodes),
+        "n_success": int(n_success),
+        "success_rate": float(success_rate),
+        "seed_base": int(seed_base),
+        "eval_s": float(eval_s),
+        "eval_ep_s": float(eval_ep_s),
+        "successes": successes,
+    }
+
+
+def xarm_run_summary(entry: dict) -> RunSummary:
+    path = REPO_ROOT / entry["txt_path"]
+    parsed = parse_xarm_txt(entry["txt_path"])
+    modified_time = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc).isoformat()
+    # day14/16/21 success is binary (cube height or cube-to-goal distance past
+    # a threshold) — there is no graded reward like PushT's. To keep the
+    # RunSummary schema uniform, avg_sum_reward/avg_max_reward here are the
+    # same binary success fraction already in success_rate, not a new number.
+    reward_proxy = parsed["n_success"] / parsed["n_episodes"]
+    return RunSummary(
+        id=entry["id"],
+        policy=entry["policy"],
+        env_type="xarm",
+        protocol="frozen-500",
+        provenance_source="log",
+        n_episodes=parsed["n_episodes"],
+        success_rate=parsed["success_rate"],
+        avg_sum_reward=reward_proxy,
+        avg_max_reward=reward_proxy,
+        videos_path=entry["txt_path"].rsplit("/", 1)[0],
+        timestamp=modified_time,
+    )
+
+
+def xarm_run_detail(entry: dict) -> RunDetail:
+    summary = xarm_run_summary(entry)
+    parsed = parse_xarm_txt(entry["txt_path"])
+    return RunDetail(
+        **summary.model_dump(),
+        eval_s=parsed["eval_s"],
+        eval_ep_s=parsed["eval_ep_s"],
+        video_paths=[p for p in entry["video_paths"] if (REPO_ROOT / p).is_file()],
+        episodes=[
+            EpisodeResult(
+                episode=index, success=is_success,
+                sum_reward=1.0 if is_success else 0.0,
+                max_reward=1.0 if is_success else 0.0,
+            )
+            for index, is_success in enumerate(parsed["successes"])
+        ],
+    )
+
+
+def xarm_run_metrics(entry: dict) -> RunMetrics:
+    summary = xarm_run_summary(entry)
+    parsed = parse_xarm_txt(entry["txt_path"])
+    successes = parsed["successes"]
+    return RunMetrics(
+        id=summary.id,
+        policy=summary.policy,
+        protocol=summary.protocol,
+        n_episodes=summary.n_episodes,
+        success_rate=summary.success_rate,
+        avg_sum_reward=summary.avg_sum_reward,
+        avg_max_reward=summary.avg_max_reward,
+        eval_s=parsed["eval_s"],
+        eval_ep_s=parsed["eval_ep_s"],
+        episode=list(range(len(successes))),
+        sum_rewards=[1.0 if is_success else 0.0 for is_success in successes],
+        max_rewards=[1.0 if is_success else 0.0 for is_success in successes],
+        successes=successes,
+    )
+
+
+def find_xarm_runs() -> list[dict]:
+    return [entry for entry in XARM_TXT_RUNS if (REPO_ROOT / entry["txt_path"]).is_file()]
 
 
 def assert_policy(run_id: str) -> str:
@@ -250,6 +398,7 @@ def health():
 @app.get("/summary", response_model=Summary)
 def summary():
     runs = [summarize(eval_file) for eval_file in find_eval_files()]
+    runs += [xarm_run_summary(entry) for entry in find_xarm_runs()]
     frozen_table = [run for run in runs if run.protocol == "frozen-500"]
     frozen_table.sort(key=lambda run: run.success_rate, reverse=True)
     return Summary(
@@ -265,11 +414,14 @@ def summary():
 @app.get("/runs", response_model=list[RunSummary])
 def list_runs():
     runs = [summarize(eval_file) for eval_file in find_eval_files()]
+    runs += [xarm_run_summary(entry) for entry in find_xarm_runs()]
     runs.sort(key=lambda run: run.timestamp, reverse=True)
     return runs
 
 @app.get("/runs/{run_id:path}/metrics", response_model=RunMetrics)
 def get_run_metrics(run_id: str):
+    if run_id in XARM_RUNS_BY_ID:
+        return xarm_run_metrics(XARM_RUNS_BY_ID[run_id])
     eval_path = resolve_run_path(run_id)
     eval_data = json.loads(eval_path.read_text())
     overall = eval_data["overall"]
@@ -298,6 +450,8 @@ def get_run_metrics(run_id: str):
 
 @app.get("/runs/{run_id:path}", response_model=RunDetail)
 def get_run(run_id: str):
+    if run_id in XARM_RUNS_BY_ID:
+        return xarm_run_detail(XARM_RUNS_BY_ID[run_id])
     return load_detail(run_id)
 
 @app.get("/curves/skill", response_model=SkillCurve)
