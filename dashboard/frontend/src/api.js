@@ -88,6 +88,19 @@ function frozenTableEntryToRow(entry) {
   return { name: String(name), value: `${rate.toFixed(1)}%`, extra: entry.protocol ?? '' }
 }
 
+// Pull just the frozen-500 rows for one env_type ("pusht" or "xarm") out of
+// /summary, so the leaderboard can show each env in its own table straight
+// from the API instead of one mixed list. Returns null (not []) when there's
+// nothing to show, so the caller can fall back to the embedded hardcoded rows.
+export function rowsForEnv(data, envType) {
+  if (!data || !Array.isArray(data.frozen_table)) return null
+  const rows = data.frozen_table
+    .filter(entry => entry && entry.env_type === envType)
+    .map(frozenTableEntryToRow)
+    .filter(Boolean)
+  return rows.length > 0 ? rows : null
+}
+
 function entryToRow(entry) {
   if (!entry || typeof entry !== 'object') return null
   const name = entry.policy ?? entry.name ?? entry.id ?? entry.run_id ?? null

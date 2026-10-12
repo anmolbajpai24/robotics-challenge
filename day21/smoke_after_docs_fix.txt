@@ -1,0 +1,182 @@
+=== smoke test after docs/fill-challenge-gaps dashboard changes ===
+date (UTC, WSL log time): Mon Oct 12 13:07:09 UTC 2026
+server: uvicorn dashboard.main:app --port 8011
+
+--- GET /health ---
+{"ok":true}
+
+--- GET /summary ---
+{
+    "counts": {
+        "runs": 19,
+        "policies": 8,
+        "envs": 3
+    },
+    "frozen_table": [
+        {
+            "id": "day16/eval_500_sighted",
+            "policy": "bc-mlp-sighted",
+            "env_type": "xarm",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 99.0,
+            "avg_sum_reward": 0.99,
+            "avg_max_reward": 0.99,
+            "videos_path": "day16",
+            "timestamp": "2026-07-31T21:03:09.019329+00:00"
+        },
+        {
+            "id": "day21/eval_500_push",
+            "policy": "bc-mlp-push",
+            "env_type": "xarm",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 98.8,
+            "avg_sum_reward": 0.988,
+            "avg_max_reward": 0.988,
+            "videos_path": "day21",
+            "timestamp": "2026-08-03T21:34:52.171228+00:00"
+        },
+        {
+            "id": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion",
+            "policy": "pretrained-diffusion",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 61.0,
+            "avg_sum_reward": 108.21993475433462,
+            "avg_max_reward": 0.9446263724126646,
+            "videos_path": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos",
+            "timestamp": "2026-07-17T00:48:04.042944+00:00"
+        },
+        {
+            "id": "day3/eval_final",
+            "policy": "diffusion-scratch",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "bash_history",
+            "n_episodes": 500,
+            "success_rate": 39.800000000000004,
+            "avg_sum_reward": 106.04062324825308,
+            "avg_max_reward": 0.8446824117180656,
+            "videos_path": "day3/eval_final/videos",
+            "timestamp": "2026-07-19T10:28:33.226464+00:00"
+        },
+        {
+            "id": "day16/eval_500_blind",
+            "policy": "bc-mlp-blind-control",
+            "env_type": "xarm",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 4.2,
+            "avg_sum_reward": 0.042,
+            "avg_max_reward": 0.042,
+            "videos_path": "day16",
+            "timestamp": "2026-07-31T21:05:43.517521+00:00"
+        },
+        {
+            "id": "day5/eval_100k",
+            "policy": "act-pusht",
+            "env_type": "pusht",
+            "protocol": "frozen-500",
+            "provenance_source": "bash_history",
+            "n_episodes": 500,
+            "success_rate": 0.8,
+            "avg_sum_reward": 44.74296661861696,
+            "avg_max_reward": 0.4418572385568005,
+            "videos_path": "day5/eval_100k/videos",
+            "timestamp": "2026-07-20T14:47:31.398073+00:00"
+        },
+        {
+            "id": "day14/eval_500_seed1000",
+            "policy": "bc-mlp-blind",
+            "env_type": "xarm",
+            "protocol": "frozen-500",
+            "provenance_source": "log",
+            "n_episodes": 500,
+            "success_rate": 0.0,
+            "avg_sum_reward": 0.0,
+            "avg_max_reward": 0.0,
+            "videos_path": "day14",
+            "timestamp": "2026-07-30T18:37:20.731514+00:00"
+        }
+    ]
+}
+
+--- GET /runs (ids + policy + env_type + protocol + success_rate only) ---
+day21/eval_500_push                                     bc-mlp-push            xarm   frozen-500   98.8
+day16/eval_500_blind                                    bc-mlp-blind-control   xarm   frozen-500   4.2
+day16/eval_500_sighted                                  bc-mlp-sighted         xarm   frozen-500   99.0
+day14/eval_500_seed1000                                 bc-mlp-blind           xarm   frozen-500   0.0
+day7/eval_aloha                                         act-aloha-pretrained   aloha  exploratory  70.0
+day7/eval_rehearsal                                     act-aloha-pretrained   aloha  exploratory  50.0
+day5/eval_100k_nas8                                     act-pusht              pusht  exploratory  11.0
+day5/eval_100k_nas1_probe                               act-pusht              pusht  exploratory  0.0
+day5/eval_100k_tempens_probe                            act-pusht              pusht  exploratory  0.0
+day5/eval_100k_nas8_probe                               act-pusht              pusht  exploratory  10.0
+day5/eval_100k                                          act-pusht              pusht  frozen-500   0.8
+day3/eval_070000                                        diffusion-scratch      pusht  exploratory  43.333333333333336
+day3/eval_050000                                        diffusion-scratch      pusht  exploratory  43.333333333333336
+day3/eval_030000                                        diffusion-scratch      pusht  exploratory  34.66666666666667
+day3/eval_010000                                        diffusion-scratch      pusht  exploratory  10.0
+day3/eval_final                                         diffusion-scratch      pusht  frozen-500   39.800000000000004
+outputs/eval/2026-07-16/22-35-58_pusht_diffusion        pretrained-diffusion   pusht  frozen-500   61.0
+outputs/eval/2026-07-16/22-12-02_pusht_diffusion        pretrained-diffusion   pusht  exploratory  50.0
+outputs/eval/2026-07-16/12-01-14_pusht_diffusion        pretrained-diffusion   pusht  exploratory  66.66666666666666
+
+--- GET /runs/day21/eval_500_push ---
+{'id': 'day21/eval_500_push', 'policy': 'bc-mlp-push', 'env_type': 'xarm', 'protocol': 'frozen-500', 'provenance_source': 'log', 'n_episodes': 500, 'success_rate': 98.8, 'avg_sum_reward': 0.988, 'avg_max_reward': 0.988, 'videos_path': 'day21', 'timestamp': '2026-08-03T21:34:52.171228+00:00', 'eval_s': 31.4, 'eval_ep_s': 0.06, 'video_paths': ['day21/rollout_push_ep0.mp4', 'day21/rollout_push_ep1.mp4', 'day21/rollout_push_ep2.mp4']}
+episodes parsed: 500
+
+--- GET /runs/day21/eval_500_push/metrics ---
+{'id': 'day21/eval_500_push', 'policy': 'bc-mlp-push', 'protocol': 'frozen-500', 'n_episodes': 500, 'success_rate': 98.8, 'avg_sum_reward': 0.988, 'avg_max_reward': 0.988, 'eval_s': 31.4, 'eval_ep_s': 0.06}
+successes True count: 494 / 500
+
+--- GET /videos ---
+[
+    {
+        "id": "outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4",
+        "title": "pretrained-diffusion \u00b7 PushT ep0, success (61.0% frozen-500)",
+        "url": "/videos/file/outputs/eval/2026-07-16/22-35-58_pusht_diffusion/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day3/eval_final/videos/pusht_0/eval_episode_0.mp4",
+        "title": "diffusion-scratch 90k \u00b7 PushT ep0, success (39.8% frozen-500)",
+        "url": "/videos/file/day3/eval_final/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day5/eval_100k/videos/pusht_0/eval_episode_0.mp4",
+        "title": "act-pusht \u00b7 PushT ep0, a rare success (0.8% frozen-500)",
+        "url": "/videos/file/day5/eval_100k/videos/pusht_0/eval_episode_0.mp4"
+    },
+    {
+        "id": "day7/aloha_transfer_best_ep3.mp4",
+        "title": "act-aloha-pretrained \u00b7 ALOHA transfer cube, best episode (7/10)",
+        "url": "/videos/file/day7/aloha_transfer_best_ep3.mp4"
+    },
+    {
+        "id": "day16/rollout_sighted_ep0.mp4",
+        "title": "bc-mlp-sighted \u00b7 xarm lift ep0 (99.0% frozen-500)",
+        "url": "/videos/file/day16/rollout_sighted_ep0.mp4"
+    },
+    {
+        "id": "day16/rollout_blind_ep0.mp4",
+        "title": "bc-mlp-blind-control \u00b7 xarm lift ep0 (4.2% frozen-500)",
+        "url": "/videos/file/day16/rollout_blind_ep0.mp4"
+    },
+    {
+        "id": "day21/rollout_push_ep0.mp4",
+        "title": "bc-mlp-push \u00b7 xarm push ep0 (98.8% frozen-500)",
+        "url": "/videos/file/day21/rollout_push_ep0.mp4"
+    }
+]
+
+--- GET / (built frontend, status + content-type only) ---
+status: 200  content-type: text/html; charset=utf-8
+
+--- GET /videos/file/day21/rollout_push_ep0.mp4 (status + size only) ---
+status: 200  content-type: video/mp4  size: 107497 bytes
